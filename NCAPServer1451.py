@@ -113,20 +113,22 @@ def MessageParse(msg):
             return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'NumChan':NumChan, 'XDCR_ChanID_Array':XDCR_ChanID_Array}
     elif NetSvcType == '2':
         if NetSvcID == '1':
-            NCAPS_ID = parse[4]
-            TIM_ID = parse[5]
-            XDCR_ChanID = parse[6]
-            Timeout = parse[7]
-            Mode = parse[8]
-            return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'XDCR_ChanID':XDCR_ChanID, 'Timeout':Timeout, 'Mode':Mode}
-        elif NetSvcID == '7':
-            NCAPS_ID = parse[4]
-            TIM_ID = parse[5]
-            XDCR_ChanID = parse[6]
-            WriteActuatorData = parse[7]
+            NCAPC_ID = parse[4]
+            NCAPS_ID = parse[5]
+            TIM_ID = parse[6]
+            XDCR_ChanID = parse[7]
             Timeout = parse[8]
             Mode = parse[9]
-            return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'XDCR_ChanID':XDCR_ChanID, 'WriteActuatorData':WriteActuatorData, 'Timeout':Timeout, 'Mode':Mode}
+            return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'XDCR_ChanID':XDCR_ChanID, 'Timeout':Timeout, 'Mode':Mode}
+        elif NetSvcID == '7':
+            NCAPC_ID = parse[4]
+            NCAPS_ID = parse[5]
+            TIM_ID = parse[6]
+            XDCR_ChanID = parse[7]
+            WriteActuatorData = parse[8]
+            Timeout = parse[9]
+            Mode = parse[10]
+            return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'XDCR_ChanID':XDCR_ChanID, 'WriteActuatorData':WriteActuatorData, 'Timeout':Timeout, 'Mode':Mode}
     elif NetSvcType == '4':
         if NetSvcID == '1':
             NCAPC_ID = parse[4]
