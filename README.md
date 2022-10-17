@@ -29,3 +29,23 @@ TODO: Ensure the correct topic is saved.
 The Website needs to be updated to allow for a different APPL ID to be sent. This is currently hardcoded.
 
 Website JS updated to send the NCAP Client ID as entered by the user, not just hardcoded. Moved the multiple publishes to the JS from the HTML.
+
+
+## 17 OCT 22 1245:
+Client will automatically generate a "random" APPLID to prevent simultaneous users from existing on the network. This was done by replacing the field for user input and now it is randomly generated.
+
+This now also requires the Client to be subscribed to the correct topics with the newly generated ID.
+
+TODO: TIM Discover in the client example needs to be a field you can enter and control separately since we do not know how many TIMs will be connected.
+
+PROBLEM!!!
+There is no current way in the TIM and XDCR Discover to know who to respond to. The current temporary fix is to remember the APPID from the initial discovery request. This WILL NOT Work with multiple devices.
+
+Sugessted Fix to 1451.0 10.1.6
+NetSvcType netSvcType//(1)
+NetSvcIdnetSvcId// (5)
+MsgType msgType // (1)
+UInt16 msgLength
+UUID appID
+UUID ncapId
+TimeDurationtimeout
