@@ -5,13 +5,17 @@ import paho.mqtt.publish as publish
 import time
 import _thread
 import sys
+from random import randint, randrange
+
+
+mqttBroker = "broker.emqx.io"
 
 
 
-NCAPS_Name = "Process001"
 AddressType = "1"
 Address = "172.24.125.154" # TODO: Make this a function which will obtain current IP Address
-NCAPS_ID = "1"
+NCAPS_ID = str(randint(1, 9999))
+NCAPS_Name = "Process " + NCAPS_ID
 NumTIM = "1"
 TIM_ID = "1"
 NumChan = "3"
@@ -137,18 +141,18 @@ def Thread132(MSG_Tuple, SenderInfo):
     print(MSG)
     response = '1,3,2,25,' + NCAPS_Name + ',' + AddressType + ',' + Address
     #mqtt_send(str(SenderInfo[1]), response)
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread152(MSG_Tuple, SenderInfo):
     #MSG = dict(map(None, MSG_Tuple))
     # TODO: Add the TIM Discovery Function
     response = '1,5,2,39,' + '0,' + NCAPS_ID + ',' + NumTIM + ',' + '1' + ','+ "BatchRx001"
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread162(MSG_Tuple, SenderInfo):
     #MSG = dict(map(None, MSG_Tuple))
     response = '1,6,2,55,' + '0,' + NCAPS_ID + ',' + TIM_ID + ',' + NumChan + ',' + XDCR_ChanID_Array + ',' + XDCR_ChanNameArray
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread212(MSG_Tuple, SenderInfo):
     print("In Thread212")
@@ -160,7 +164,7 @@ def Thread212(MSG_Tuple, SenderInfo):
             ReadSensorData = "1234"
     response = '2,1,1,N,0,' + NCAPS_ID + ',' + TIM_ID + ',' + MSG["XDCR_ChanID"] + ',' + ReadSensorData + ',' + time.strftime("%H:%M:%S", time.localtime())
     print(response)
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread272(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
@@ -169,7 +173,7 @@ def Thread272(MSG_Tuple, SenderInfo):
             print(str(MSG["WriteActuatorData"]))
             display.show(MSG["WriteActuatorData"])
     response = '2,7,2,19,0,' + NCAPS_ID + ',' + TIM_ID + ',' + MSG["XDCR_ChanID"]
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread412(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
@@ -177,7 +181,7 @@ def Thread412(MSG_Tuple, SenderInfo):
         global AlertEnable
         AlertEnable = True
     response = '4,1,2,29,0,' + MSG["NCAPC_ID"] + ',' + "11" + ',' + NCAPS_ID + ',' + TIM_ID + ',' + '1,' + MSG["XDCR_ChanID"]
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread422(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
@@ -185,7 +189,7 @@ def Thread422(MSG_Tuple, SenderInfo):
         global AlertEnable
         AlertEnable = False
     response = '4,2,2,29,0,' + MSG["NCAPC_ID"] + ',' + "11" + ',' + NCAPS_ID + ',' + TIM_ID + ',' + '1,' + MSG["XDCR_ChanID"]
-    publish.single(ResponseTopic, response, hostname="broker.emqx.io")
+    publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 
 
@@ -199,7 +203,7 @@ def SendAlert(SubscriptionID, Value):
     if TargetClients != None:
         for Clients in TargetClients:
             AlertString = "4,2,4,23," + NCAPS_ID + ',' + TIM_ID + ',' + '3' + ',' + SubscriptionID + ',' + Value
-            publish.single(ResponseTopic, AlertString, hostname="broker.emqx.io")
+            publish.single(ResponseTopic, AlertString, hostname=mqttBroker)
 
 '''
 def CheckSubscriberList(SubscriptionID):
@@ -224,14 +228,14 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("broker.emqx.io", 1883, 60)
-mqttc.subscribe("RUSMARTLAB/NCAPS001", 0)
+mqttc.connect(mqttBroker, 1883, 60)
+mqttc.subscribe("RUSMARTLAB/"+NCAPS_Name, 0)
 
 
 # Start the Client Loop
 mqttc.loop_start()
 while True:
-    publish.single("RUSMARTLAB/Heartbeat", "NCAPS001,1", hostname="broker.emqx.io")
+    publish.single("RUSMARTLAB/Heartbeat", "NCAPS" + NCAPS_ID +",1", hostname=mqttBroker)
     print("Published Heartbeat")
     time.sleep(10)
 mqttc.loop_stop()
