@@ -197,7 +197,7 @@ def Thread212(MSG_Tuple, SenderInfo):
     if MSG["TIM_ID"] == '1':
         if MSG["XDCR_ChanID"] == '1':
             #ReadSensorData = str(round(sensor.temperature,2))
-            ReadSensorData = "1234"
+            ReadSensorData = str(20 + randint(0,10))
     response = '2,1,1,N,0,' + NCAPS_ID + ',' + TIM_ID + ',' + MSG["XDCR_ChanID"] + ',' + ReadSensorData + ',' + time.strftime("%H:%M:%S", time.localtime())
     print(response)
     #publish.single(ResponseTopic, response, hostname=mqttBroker)
@@ -283,7 +283,7 @@ mqttc.subscribe("RUSMARTLAB/"+NCAPS_ID, 0)
 # Start the Client Loop
 mqttc.loop_start()
 while True:
-    publish.single("RUSMARTLAB/Heartbeat", "NCAPS" + NCAPS_ID +",1", hostname=mqttBroker)
+    publish.single("RUSMARTLAB/Heartbeat", NCAPS_ID +",1", hostname=mqttBroker)
     print("Published Heartbeat")
     time.sleep(10)
 mqttc.loop_stop()
