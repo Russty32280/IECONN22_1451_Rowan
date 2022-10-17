@@ -24,3 +24,8 @@ The Application ID will be remembered through the Discover Services initially, h
 Current changes are in Thread132, while it does not publish to the correct new topic, it will respond back to the original topic. It also prints to the new topic to the console.
 
 TODO: Ensure the correct topic is saved.
+
+## 17 OCT 22 1145:
+The Website needs to be updated to allow for a different APPL ID to be sent. This is currently hardcoded.
+
+Website JS updated to send the NCAP Client ID as entered by the user, not just hardcoded. Moved the multiple publishes to the JS from the HTML.

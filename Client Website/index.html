@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+    <head>
+        <title>IECONN 2022 Plugfest Demo 1451.0</title>
+        <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+      }
+    </style>
+    </head>
+    <script src="js/paho-mqtt.js"></script>
+    <script src="my-project.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <body>
+        <h1>ISIE Scene-Based Plugfest Demo for 1451.0</h1>
+        <p>Press the buttons in order to connect and listen to an NCAP</p>
+        <p>Note: When you subscribe to the NCAP, you will receive all messages being sent from the NCAP.<br>
+          This will be fixed in a upcoming version to allow you to independently access the NCAP.</p>
+        <p>If you want to use an MQTT client in order to listen to the messages being sent outside this webpage, here are the topics:</p>
+        <ul>
+            <li>Broker: public.cloud.shiftr.io </li>
+            <li>Port: 8083</li>
+            <li>Heartbeat: RUSMARTLAB/Heartbeat</li>
+            <li>Messages Sent To the NCAP (Command): RUSMARTLAB/NCAP001</li>
+            <li>Messages Sent By the NCAP (Response): RUSMARTLAB/Process001</li>
+        </ul>
+
+
+
+    <button onclick="client.connect(options);">Click to Connect to MQTT Broker</button>
+
+    <h1>Scene 1: Network Entities Come Online</h1>
+    <img src="https://i.gyazo.com/c4502c660c9ffa00262b98f36ac33837.png">
+    <p>Since the entities have already been turned on, they will begin announcing their presence to our Network.<br>
+       In a MQTT implementation, this in done as each NCAP sending its NCAP_ID to a dedicated topic for all Applications to listen to.</p>
+    <!--
+    <button onclick="client.subscribe('RUSMARTLAB/Heartbeat', {qos: 2}); alert('Subscribed');">Begin Listening for Announcement Messages</button>
+  -->
+    <h2>Heartbeat Messages</h2>
+    <div id="heartbeatMessages">
+      Click to subcribe to the heartbeat messages:
+      <button onclick="client.subscribe('RUSMARTLAB/Heartbeat', {qos: 2}); alert('Subscribed');">Subscribe to Heartbeat</button>
+    </div>
+
+
+    <table id="heartbeatTable2" style="width:100%">
+        <tr>
+          <th>NCAP Name</th>
+          <th>Last Received Heartbeat</th>
+        </tr>
+    </table>
+
+
+    <input type="text" id="input1" />
+    <button onclick="setUserNCAPID()">Set NCAPID</button>
+    <input type="text" id="input2" />
+    <button onclick="setUserAPPLID()">Set APPLID</button>
+
+
+    <h1>Scene 2: Discovering the Network</h1>
+    <img src="https://i.gyazo.com/c2fc3ea106ed490d0641aebb613ec6e2.png">
+    <p>Now that we are aware that there are NCAPs to be accessed, we being discovering what each of them are and what is connected to them. This is done in the following steps:</p>
+    <h2>Discover the NCAP</h2>
+    <p>We know what the NCAP ID is so we can use that to determine what is its name and the number of TIMs connected to it.</p>
+    <button onclick="discoverNCAP()">Discover the Network</button>
+    <div id="entity1_NCAP">
+      <p>Waiting for Discovery</p>
+    </div>
+    <div id="entity1_TIM">
+      <p>Waiting for Discovery</p>
+    </div>
+    <div id = "NCAP Discover"></div>
+    <div id="entity1_XDCR">
+      <p>Waiting for Discovery</p>
+    </div>
+    <div id = "TIM Discover"></div>
+
+
+
+<!--
+    <h3>Network Entities</h3>
+    <button onclick="discoverNCAP(userNCAPID);">Start Discovery</button>
+-->
+
+
+    <h1>Scene 3: Joining and Event Subscription</h1>
+    <img src="https://i.gyazo.com/2bd2fb745904f53598e9f6a02012aae1.png">
+    <p>Since the NCAPs and TIMs have been discovered, we can join with them and establish alert subscriptions.</p>
+
+    <table id="transducerEventTable" style="width:100%">
+        <tr>
+          <th>Transducer Name</th>
+          <th>Event Time</th>
+        </tr>
+    </table>
+    <button onclick="publish('4,1,1,33,1,1,11,1,3,(10;250)', 'RUSMARTLAB/', 2)">Subscribe to Alerts</button>
+    <button onclick="publish('4,2,1,33,1,1,11,1,3,(10;250)', 'RUSMARTLAB/', 2)">Unsubscribe to Alerts</button>
+
+
+    <h1>Scene 4: Reading and Writing Transducer Data</h1>
+    <img src="https://i.gyazo.com/6fc04ccd4e4b4f424672bfcc6a0acad4.png">
+    <p>We can begin to read and write to the transducers connected to our NCAP and TIMS.</p>
+
+
+    <input type="text" id="userChanID" />
+    <button onclick="setUserChanID()">Set Channel ID</button>
+    <div id="data-received"></div>
+    <button onclick="publish('2,1,1,27,1,1,' + userChanID + ',1,10,1', 'RUSMARTLAB/',2);">Request Channel 1 Data</button>
+    <div>
+    <input type="text" id="setPoint" />
+    <button onclick="setUserSetPoint()">Set the target Temperature</button>
+    </div>
+    <h2>Control Action</h2>
+    <div id="ControlAmount">
+    </div>
+
+    <button onclick="publish('2,7,1,29,1,1,2,' + tempDiffString +',10,1', 'RUSMARTLAB/', 2)">Send Correction</button>
+
+    <div>
+      <canvas id="myChart"></canvas>
+    </div>
+
+
+
+    <!--
+    <button onclick="publish('Hello Foo !','testtopic/AbCdEfG',2);">3. Publish</button>
+    <button onclick="client.disconnect();">(4. Disconnect)</button>
+    -->
+    <button onclick="subscribe('RUSMARTLAB/', {qos: 2}); alert('Subscribed');">3. Subscribe to NCAP001</button>
+    <button onclick="publish('1,3,1,8,1,1', 'RUSMARTLAB/',2);">4. Discover NCAP001</button>
+    <button onclick="publish('1,5,1,16,1,1', 'RUSMARTLAB/',2);">5. Discover TIMs</button>
+    <button onclick="publish('1,6,1,16,1,1', 'RUSMARTLAB/',2);">6. Discover XDCRs</button>
+
+    <h1>Commands Sent to NCAP001</h1>
+    <div id="sentMessages"></div>
+    <h1>Received Messages From NCAP001</h1>
+    <div id="receivedMessages"></div>
+    <h1>IEEE 1451.0 Message Parse</h1>
+    <div id="messages_details"></div>
+
+
+
+
+
+
+</body>
+</html>

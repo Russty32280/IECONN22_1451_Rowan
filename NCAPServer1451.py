@@ -151,8 +151,8 @@ def Thread132(MSG_Tuple, SenderInfo):
     #print(MSG)
     response = '1,3,2,25,' + NCAPS_Name + ',' + AddressType + ',' + Address
     #mqtt_send(str(SenderInfo[1]), response)
-    LocalResponseTopic = "RUSMARTLAB/"+str(MSG["NCAPC_ID"])
-    print("Local Reponse Topic: " + LocalResponseTopic)
+    LocalResponseTopic = "RUSMARTLAB/"+MSG["NCAPC_ID"]
+    print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     #publish.single("RUSMARTLAB/"+str(MSG["NCAPC_ID"]), response, hostname=mqttBroker)
     publish.single(ResponseTopic, response, hostname=mqttBroker)
 
