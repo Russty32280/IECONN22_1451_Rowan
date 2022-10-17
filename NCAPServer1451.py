@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+'''
+TODO: Implement Random Number Generation for Sensor data
+Confirm sending sensor data to multiple clients.
+Get Sensor Alerts Working
+Make into executable
+Begin Conversion to 1451.0 Byte Strings
+
+'''
+
+
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
