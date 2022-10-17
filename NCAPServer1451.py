@@ -6,6 +6,15 @@ import time
 import _thread
 import sys
 from random import randint, randrange
+import socket
+
+# Determine the IP Address of the machine running the code.
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+Address = s.getsockname()[0]
+print(Address)
+s.close()
+
 
 
 mqttBroker = "broker.emqx.io"
@@ -13,9 +22,9 @@ mqttBroker = "broker.emqx.io"
 
 
 AddressType = "1"
-Address = "172.24.125.154" # TODO: Make this a function which will obtain current IP Address
+#Address = "172.24.125.154" # TODO: Make this a function which will obtain current IP Address
 NCAPS_ID = str(randint(1, 9999))
-NCAPS_Name = "Process " + NCAPS_ID
+NCAPS_Name = "Process" + NCAPS_ID
 NumTIM = "1"
 TIM_ID = "1"
 NumChan = "3"
@@ -80,7 +89,7 @@ def MessageParse(msg):
     MsgType =  parse[2]
     MsgLength =  parse[3]
     if NetSvcType == '1':
-        if NetSvcID == '3':
+        if NetSvcID == '3': # NCAP Discovery Request
             NCAPC_ID = parse[4]
             return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID}
         elif NetSvcID == "5":
@@ -135,12 +144,16 @@ def MessageParse(msg):
 
 
 def Thread132(MSG_Tuple, SenderInfo):
-    print(MSG_Tuple)
-    print(SenderInfo)
+    # NCAP Server Discover Response
+    #print(MSG_Tuple)
+    #print(SenderInfo)
     MSG = dict(MSG_Tuple)
-    print(MSG)
+    #print(MSG)
     response = '1,3,2,25,' + NCAPS_Name + ',' + AddressType + ',' + Address
     #mqtt_send(str(SenderInfo[1]), response)
+    LocalResponseTopic = "RUSMARTLAB/"+str(MSG["NCAPC_ID"])
+    print("Local Reponse Topic: " + LocalResponseTopic)
+    #publish.single("RUSMARTLAB/"+str(MSG["NCAPC_ID"]), response, hostname=mqttBroker)
     publish.single(ResponseTopic, response, hostname=mqttBroker)
 
 def Thread152(MSG_Tuple, SenderInfo):
