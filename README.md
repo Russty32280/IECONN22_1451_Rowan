@@ -1,5 +1,16 @@
 # IECONN22_1451_Rowan
 
+In order to run the NCAP server:
+
+  Install the latest version of Python 3
+
+  Download NCAPServer1451.py from the repository
+
+  Install the paho MQTT python client with "pip3 install paho-mqtt"
+
+  Using IDLE, open NCAPServer1451.py
+
+  Run the python file
 
 # Change Log
 ## 16 OCT 22 2057:
