@@ -16,9 +16,9 @@ In order to run the NCAP server:
 - [ ] 10.1.1 NCAP Announcement
 - [ ] 10.1.2 NCAP TIM Announcement
 - [ ] 10.1.3 NCAP TIM XDCR Announcement
-- [ ] 10.1.4 NCAP Discovery
-- [ ] 10.1.5 NCAP TIM Discovery
-- [ ] 10.1.6 NCAP TIM XDCR Discovery
+- [x] 10.1.4 NCAP Discovery
+- [x] 10.1.5 NCAP TIM Discovery
+- [x] 10.1.6 NCAP TIM XDCR Discovery
 
 
 ## Transducer Access Services
@@ -58,6 +58,28 @@ In order to run the NCAP server:
 - [ ] Callback Asynchronous Write XDCR Sample Data From Multiple Channels of Multiple TIMs
 - [ ] Asynchronous Write XDCR Block Data From Multiple Channels of Multiple TIMs
 - [ ] Callback Asynchronous Write XDCR Block Data From Multiple Channels of Multiple TIMs
+
+## TEDS Access Services
+- [ ] 10.3.1 Query TEDS
+- [ ] Read TEDS
+- [ ] Write TEDS
+- [ ] Update TEDS
+
+## Event Notification Services
+- [ ] Subscribe New TIM From NCAP
+- [ ] Notify New TIM to APP
+- [ ] Subscribe a TIM Departure from NCAP
+- [ ] Notify a Departed TIM to APP
+- [ ] Subscribe XDCR Alert from One Channel of One TIM
+- [ ] Notify XDCR Alert from One Channel of One TIM
+- [ ] Subscribe XDCR Alert from Multiple Channels of One TIM
+- [ ] Notify XDCR Alert from Multiple Channels of One TIM
+- [ ] Subscribe XDCR Alerts from Multiple Channels of Multiple TIMs
+- [ ] Notify XDCR Alerts from Multiple Channels of Multiple TIMs
+- [ ] Setup A XDCR Alert Threshold for One Channel of One TIM
+- [ ] Setup XDCR Alert Thresholds for Multiple Channels of a TIM
+- [ ] Setup XDCR Alert Thresholds for Multiple Channels of Multiple TIMs
+
 
 # Change Log
 ## 16 OCT 22 2057:
