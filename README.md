@@ -1,5 +1,16 @@
 # IECONN22_1451_Rowan
 
+In order to run the NCAP server:
+  Install the latest version of Python 3
+
+  Download NCAPServer1451.py from the repository
+
+  Install the paho MQTT python client with "pip3 install paho-mqtt"
+
+  Using IDLE, open NCAPServer1451.py
+
+  Run the python file
+
 # List of working functions
 ## Discovery Services
 - [ ] 10.1.1 NCAP Announcement
@@ -8,6 +19,7 @@
 - [ ] 10.1.4 NCAP Discovery
 - [ ] 10.1.5 NCAP TIM Discovery
 - [ ] 10.1.6 NCAP TIM XDCR Discovery
+
 
 ## Transducer Access Services
 - [ ] Synchronous Read XDCR Sample Data From a Channel of a TIM
