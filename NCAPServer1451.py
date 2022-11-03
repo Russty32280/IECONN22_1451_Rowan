@@ -8,8 +8,6 @@ Make into executable
 Begin Conversion to 1451.0 Byte Strings
 
 '''
-
-
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
@@ -25,11 +23,7 @@ Address = s.getsockname()[0]
 print(Address)
 s.close()
 
-
-
 mqttBroker = "broker.emqx.io"
-
-
 
 AddressType = "1"
 #Address = "172.24.125.154" # TODO: Make this a function which will obtain current IP Address
@@ -43,16 +37,9 @@ XDCR_ChanNameArray = "(\"Temp000001\";\"Valve00001\";\"PresSw0001\")"
 ResponseTopic = "RUSMARTLAB/NCAPC001"
 AlertEnable = False
 
-
-
-
-
-
 # MQTT Callback Functions
-
 def on_connect(mqttc, obj, flags, rc):
     print("rc: " + str(rc))
-
 
 def on_message(mqttc, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + msg.payload.decode('UTF-8'))
@@ -76,20 +63,14 @@ def on_message(mqttc, obj, msg):
         elif MsgDict["NetSvcID"] == '2':
             _thread.start_new_thread(Thread422, (tuple(MsgDict.items()), ('ResponseTopic', ResponseTopic)))
 
-
 def on_publish(mqttc, obj, mid):
     print("mid: " + str(mid))
-
 
 def on_subscribe(mqttc, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
-
 def on_log(mqttc, obj, level, string):
     print(string)
-
-
-
 
 # Parsing Engine
 def MessageParse(msg):
@@ -98,8 +79,8 @@ def MessageParse(msg):
     NetSvcID =  parse[1]
     MsgType =  parse[2]
     MsgLength =  parse[3]
-    if NetSvcType == '1':
-        if NetSvcID == '3': # NCAP Discovery Request
+    if NetSvcType == '1': # It is a discovery service
+        if NetSvcID == '3': # NCAP Discovery Request Note -> should be 4
             NCAPC_ID = parse[4]
             Timeout = parse[5]
             return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID, 'Timeout':Timeout}
@@ -157,8 +138,31 @@ def MessageParse(msg):
             AlertMinMaxArray = parse[9]
             return{'NetSvcType':NetSvcType, 'NetSvcID':NetSvcID, 'MsgType':MsgType, 'MsgLength':MsgLength, 'NCAPC_ID':NCAPC_ID, 'NCAPS_ID':NCAPS_ID, 'TIM_ID':TIM_ID, 'NumChan':NumChan, 'XDCR_ChanID':XDCR_ChanID, 'AlertMinMaxArray':AlertMinMaxArray}
 
+# Use this comment structure for service threads
+'''
+X.X.X Service_Name (XX XX) - X
 
+ - Description
 
+Network Service type (NetSvcType) = _ ()
+Network Service ID   (NetSvcId)   = _ ()
+Message Type         (MsgType)    = _ ()
+'''
+
+# Service threads
+
+'''
+10.1.4 NCAP discovery (01 04) - Reply
+
+ - The APP uses this service to discover active NCAPs
+
+Network Service type (NetSvcType) = 1 (Discovery service)
+Network Service ID   (NetSvcId)   = 4 (NCAPDiscovery)
+Message Type         (MsgType)    = 2 (Reply)
+
+Notes
+- should be called Thread142
+'''
 def Thread132(MSG_Tuple, SenderInfo):
     # NCAP Server Discover Response
     #print(MSG_Tuple)
@@ -171,6 +175,15 @@ def Thread132(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+10.1.5 NCAP TIM discovery (01 05) - Reply
+
+ - The APP uses this service to discover TIMs connected to active NCAPs
+
+Network Service type (NetSvcType) = 1 (Discovery service)
+Network Service ID   (NetSvcId)   = 5 (NCAPTIMDiscovery)
+Message Type         (MsgType)    = 2 (Reply)
+'''
 def Thread152(MSG_Tuple, SenderInfo):
     #MSG = dict(map(None, MSG_Tuple))
     # TODO: Add the TIM Discovery Function
@@ -181,6 +194,15 @@ def Thread152(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+10.1.6 NCAP TIM transducer discovery (01 06) - Reply
+
+ - The APP uses this service to discover TransducerChannels on TIMS connected to active NCAPS
+
+Network Service type (NetSvcType) = 1 (Discovery service)
+Network Service ID   (NetSvcId)   = 6 (NCAPTIMTransducerDiscovery)
+Message Type         (MsgType)    = 2 (Reply)
+'''
 def Thread162(MSG_Tuple, SenderInfo):
     #MSG = dict(map(None, MSG_Tuple))
     MSG = dict(MSG_Tuple)
@@ -190,6 +212,15 @@ def Thread162(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+10.2.1 Synchronous read transducer sample data from a channel of a TIM (02 01) - Reply
+
+ - This service is used to read transducer sample data from a TIM Channel
+
+Network Service type (NetSvcType) = 2 (Transducer access service)
+Network Service ID   (NetSvcId)   = 1 (SyncReadTransducerSampleDataFromAChannelOfATIM)
+Message Type         (MsgType)    = 2 (Reply)
+'''
 def Thread212(MSG_Tuple, SenderInfo):
     print("In Thread212")
     MSG = dict(MSG_Tuple)
@@ -205,6 +236,16 @@ def Thread212(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+10.2.7 Synchronous write transducer sample data to a channel of a TIM service (02 07) - Reply
+
+ - This service is used to write a single transducer setting to a specific channel of a 
+   specific TIM of a specific active NCAP
+
+Network Service type (NetSvcType) = 2 (Transducer access service)
+Network Service ID   (NetSvcId)   = 7 (SyncWriteTransducerSampleDataFromAChannelOfATIM)
+Message Type         (MsgType)    = 2 (Reply)
+'''
 def Thread272(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
     if MSG["TIM_ID"] == '1':
@@ -217,6 +258,16 @@ def Thread272(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+10.4.1 Subscribe new TIM from NCAP (04 01) - Reply
+
+ - When a new TIM is plugged in, the TIM sends a TIM notification to the NCAP, and the NCAP
+   should report this new TIM to the APP. The APP should subscribe a new TIM plug-in service
+
+Network Service type (NetSvcType) = 4 (Event notification service)
+Network Service ID   (NetSvcId)   = 1 (SubscribeNewTIMFromNCAP)
+Message Type         (MsgType)    = 2 (Reply)
+'''
 def Thread412(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
     if MSG["NCAPC_ID"] == "1":
@@ -228,6 +279,18 @@ def Thread412(MSG_Tuple, SenderInfo):
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
 
+'''
+X.X.X Service_Name (XX XX) - X
+
+ - Description
+
+Network Service type (NetSvcType) = _ ()
+Network Service ID   (NetSvcId)   = _ ()
+Message Type         (MsgType)    = _ ()
+
+Notes
+- What is this?
+'''
 def Thread422(MSG_Tuple, SenderInfo):
     MSG = dict(MSG_Tuple)
     if MSG["NCAPC_ID"] == "1":
@@ -238,9 +301,6 @@ def Thread422(MSG_Tuple, SenderInfo):
     LocalResponseTopic = "RUSMARTLAB/"+MSG["NCAPC_ID"]
     print("Local Reponse Topic: " + LocalResponseTopic + "\n")
     publish.single(LocalResponseTopic, response, hostname=mqttBroker)
-
-
-
 
 def SendAlert(SubscriptionID, Value):
     #TargetClients = CheckSubscriberList(SubscriptionID)
@@ -258,15 +318,9 @@ def CheckSubscriberList(SubscriptionID):
     #TODO Possibly add value to check against mins/max
     if
 
-
 def AddSubscriber(NCAPC_ID, SubscriptionID):
 
 '''
-
-
-
-
-
 
 # MQTT Client Initialization
 mqttc = mqtt.Client()
@@ -278,7 +332,6 @@ mqttc.on_subscribe = on_subscribe
 # mqttc.on_log = on_log
 mqttc.connect(mqttBroker, 1883, 60)
 mqttc.subscribe("RUSMARTLAB/"+NCAPS_ID, 0)
-
 
 # Start the Client Loop
 mqttc.loop_start()
