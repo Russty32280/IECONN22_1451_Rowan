@@ -1,5 +1,51 @@
 # IECONN22_1451_Rowan
 
+# List of working functions
+## Discovery Services
+- [ ] 10.1.1 NCAP Announcement
+- [ ] 10.1.2 NCAP TIM Announcement
+- [ ] 10.1.3 NCAP TIM XDCR Announcement
+- [ ] 10.1.4 NCAP Discovery
+- [ ] 10.1.5 NCAP TIM Discovery
+- [ ] 10.1.6 NCAP TIM XDCR Discovery
+
+## Transducer Access Services
+- [ ] Synchronous Read XDCR Sample Data From a Channel of a TIM
+- [ ] Synchronous Read XDCR Block Data From a Channel of a TIM
+- [ ] Synchronous Read XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Synchronous Read XDCR Block Data From Multiple Channels of a TIM
+- [ ] Synchronous Read XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Synchronous Read XDCR Block Data From Multiple Channels of Multiple TIMs
+- [ ] Synchronous Write XDCR Sample Data From a Channel of a TIM
+- [ ] Synchronous Write XDCR Block Data From a Channel of a TIM
+- [ ] Synchronous Write XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Synchronous Write XDCR Block Data From Multiple Channels of a TIM
+- [ ] Synchronous Write XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Synchronous Write XDCR Block Data From Multiple Channels of Multiple TIMs
+- [ ] Asynchronous Read XDCR Sample Data From a Channel of a TIM
+- [ ] Callback Asynchronous Read XDCR Sample Data From a Channel of a TIM
+- [ ] Asynchronous Read XDCR Block Data From a Channel of a TIM
+- [ ] Callback Asynchronous Read XDCR Block Data From a Channel of a TIM
+- [ ] Asynchronous Read XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Callback Asynchronous Read XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Asynchronous Read XDCR Block Data From Multiple Channels of a TIM
+- [ ] Callback Asynchronous Read XDCR Block Data From Multiple Channels of a TIM
+- [ ] Asynchronous Read XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Callback Asynchronous Read XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Asynchronous Read XDCR Block Data From Multiple Channels of Multiple TIMs
+- [ ] Callback Asynchronous Read XDCR Block Data From Multiple Channels of Multiple TIMs
+- [ ] Asynchronous Write XDCR Sample Data From a Channel of a TIM
+- [ ] Callback Asynchronous Write XDCR Sample Data From a Channel of a TIM
+- [ ] Asynchronous Write XDCR Block Data From a Channel of a TIM
+- [ ] Callback Asynchronous Write XDCR Block Data From a Channel of a TIM
+- [ ] Asynchronous Write XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Callback Asynchronous Write XDCR Sample Data From Multiple Channels of a TIM
+- [ ] Asynchronous Write XDCR Block Data From Multiple Channels of a TIM
+- [ ] Callback Asynchronous Write XDCR Block Data From Multiple Channels of a TIM
+- [ ] Asynchronous Write XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Callback Asynchronous Write XDCR Sample Data From Multiple Channels of Multiple TIMs
+- [ ] Asynchronous Write XDCR Block Data From Multiple Channels of Multiple TIMs
+- [ ] Callback Asynchronous Write XDCR Block Data From Multiple Channels of Multiple TIMs
 
 # Change Log
 ## 16 OCT 22 2057:
